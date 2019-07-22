@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import TodoItem from './TodoItem/TodoItem';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    url: "http://localhost:8888/wp-json/",
+    todos: []
+  }
+
+  componentDidMount() {
+    fetch(`${this.state.url}wp/v2/todos`)
+        .then(res => res.json())
+        .then( response => {
+          this.setState({todos: response})
+        })
+  }
+
+  render() {
+    let todos = null;
+
+    todos = (
+        <div>
+          {this.state.todos.map((todo) => {
+            return <TodoItem
+                    content={todo.title.rendered}
+                />
+          })}
+        </div>
+    );
+    return(
+        <div className="container">
+          <h1>TodoList</h1>
+          <div className="todo">
+
+            <div className="content">
+              <ul className="list-group">
+                {todos}
+              </ul>
+            </div>
+
+            <div className="todo-footer">
+              <p>Double Click to Delete</p>
+            </div>
+          </div>
+        </div>
+    );
+  }
 }
+
 
 export default App;
