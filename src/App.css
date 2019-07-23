@@ -25,3 +25,8 @@ h1 {
 .todo-footer p {
   margin-top: 10px;
 }
+
+.list-group {
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,36 @@
+.list-is-active {
+  color: #5b5b5b;
+  text-decoration: line-through;
+  background-color: #bfc0c1;
+}
+
+.list-group-item:hover {
+  background-color: #E4F0F5;
+  cursor: pointer;
+}
+
+.list-is-active:hover {
+  cursor: pointer;
+  background-color: #bfc0c1;
+  color: #5b5b5b;
+  text-decoration: line-through;
+}
+
+.todoItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  list-style-type: none;
+  border: solid 1px #bfc0c1;
+  border-radius: 5px;
+  color: #5b5b5b;
+  height: 40px;
+}
+
+.todoItem input, .todoItem li {
+  padding: 10px;
+}
+
+
+

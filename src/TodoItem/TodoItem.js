@@ -4,8 +4,9 @@ import './TodoItem.css';
 const todoItem = (props) => {
 
     return(
-        <div className="todoItem">
-            <li className="list-group-item">{props.content}</li>
+        <div className="todoItem list-group-item">
+            <input type="checkbox"/>
+            <li>{props.content}</li>
         </div>
     );
 }

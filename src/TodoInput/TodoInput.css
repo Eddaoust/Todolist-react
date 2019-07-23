@@ -1,0 +1,9 @@
+.form-control {
+  width: 98%;
+  height: 40px;
+  border: solid 1px #bfc0c1;
+  border-radius: 5px;
+  color: #5b5b5b;
+  padding-left: 10px;
+  font-size: 18px;
+}
