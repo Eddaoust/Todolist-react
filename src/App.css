@@ -36,10 +36,3 @@ h1 {
   text-decoration: line-through;
   background-color: #bfc0c1;
 }
-
-.list-is-active:hover {
-  cursor: pointer;
-  background-color: #bfc0c1;
-  color: #5b5b5b;
-  text-decoration: line-through;
-}

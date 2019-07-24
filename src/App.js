@@ -54,7 +54,34 @@ class App extends Component {
   }
 
   toggleTaskHandler = (taskIndex) => {
-      console.log(Classes)
+      let task = this.state.todos[taskIndex]
+      let data = {
+          "fields": {
+              "eddst_todo_done": ''
+          }
+      }
+      if (task.acf.eddst_todo_done !== true) {
+          data.fields.eddst_todo_done = true
+          task.acf.eddst_todo_done = true
+      } else {
+          data.fields.eddst_todo_done = false
+          task.acf.eddst_todo_done = false
+      }
+      // Post the data to WP API
+      fetch(`${this.state.url}acf/v3/posts/${task.id}`, {
+          method: "POST",
+          headers: new Headers({
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic ' + Buffer.from(this.state.auth.login + ":" + this.state.auth.password).toString('base64'),
+          }),
+          body: JSON.stringify(data)
+      })
+          .then(res => res.json())
+          .then(response => {
+              let todos = [...this.state.todos]
+              todos[taskIndex] = task
+              this.setState({todos: todos})
+          })
   }
 
   render() {
