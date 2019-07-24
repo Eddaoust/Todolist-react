@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import TodoItem from './TodoItem/TodoItem';
 import TodoInput from './TodoInput/TodoInput';
+import Classes from './App.css';
 
 class App extends Component {
   state = {
@@ -42,28 +43,40 @@ class App extends Component {
             body: JSON.stringify(data)
         })
             .then(res => res.json())
-            .then(response => console.log(response))
-
-        // Edit the state
-        let inputValue = {
-            title: {
-                rendered: event.target.value
-            }
-        }
-        let todos = [...this.state.todos]
-        todos.push(inputValue)
-        this.setState({todos: todos})
+            .then(response => {
+                // Edit the state
+                let todos = [...this.state.todos]
+                todos.push(response)
+                this.setState({todos: todos})
+            })
+        event.target.value = ''
     }
+  }
+
+  toggleTaskHandler = (taskIndex) => {
+      console.log(Classes)
   }
 
   render() {
     let todos = null;
 
     todos = (
-          this.state.todos.map((todo) => {
-            return <TodoItem
-                    content={todo.title.rendered}
-                />
+          this.state.todos.map((todo, index) => {
+              if (todo.acf.eddst_todo_done === true) {
+                  return <TodoItem
+                      active="list-is-active"
+                      content={todo.title.rendered}
+                      key={todo.id}
+                      click={() => this.toggleTaskHandler(index)}
+                  />
+              } else {
+                  return <TodoItem
+                      content={todo.title.rendered}
+                      key={todo.id}
+                      click={() => this.toggleTaskHandler(index)}
+                  />
+              }
+
           })
     );
 

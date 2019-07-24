@@ -30,3 +30,16 @@ h1 {
   margin: 0;
   padding: 0;
 }
+
+.list-is-active {
+  color: #5b5b5b;
+  text-decoration: line-through;
+  background-color: #bfc0c1;
+}
+
+.list-is-active:hover {
+  cursor: pointer;
+  background-color: #bfc0c1;
+  color: #5b5b5b;
+  text-decoration: line-through;
+}

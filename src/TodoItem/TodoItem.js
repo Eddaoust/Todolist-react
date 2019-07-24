@@ -4,8 +4,7 @@ import './TodoItem.css';
 const todoItem = (props) => {
 
     return(
-        <div className="todoItem list-group-item">
-            <input type="checkbox"/>
+        <div className={props.active ? props.active + " todoItem list-group-item": "todoItem list-group-item"} onClick={props.click}>
             <li>{props.content}</li>
         </div>
     );
