@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './App.css';
 import TodoItem from './TodoItem/TodoItem';
 import TodoInput from './TodoInput/TodoInput';
-import Classes from './App.css';
 
 class App extends Component {
   state = {
@@ -28,7 +27,7 @@ class App extends Component {
     if (event.keyCode === 13) {
 
         // Define the data object
-        let data = {
+        const data = {
             "status": "publish",
             "title": event.target.value
         }
@@ -45,7 +44,7 @@ class App extends Component {
             .then(res => res.json())
             .then(response => {
                 // Edit the state
-                let todos = [...this.state.todos]
+                const todos = [...this.state.todos]
                 todos.push(response)
                 this.setState({todos: todos})
             })
@@ -54,8 +53,10 @@ class App extends Component {
   }
 
   toggleTaskHandler = (taskIndex) => {
-      let task = this.state.todos[taskIndex]
-      let data = {
+      // State copy to edit it
+      const task = this.state.todos[taskIndex]
+      // Request body
+      const data = {
           "fields": {
               "eddst_todo_done": ''
           }
@@ -67,6 +68,9 @@ class App extends Component {
           data.fields.eddst_todo_done = false
           task.acf.eddst_todo_done = false
       }
+      const todos = [...this.state.todos]
+      todos[taskIndex] = task
+      this.setState({todos: todos})
       // Post the data to WP API
       fetch(`${this.state.url}acf/v3/posts/${task.id}`, {
           method: "POST",
@@ -76,12 +80,21 @@ class App extends Component {
           }),
           body: JSON.stringify(data)
       })
-          .then(res => res.json())
-          .then(response => {
-              let todos = [...this.state.todos]
-              todos[taskIndex] = task
-              this.setState({todos: todos})
-          })
+  }
+
+  deleteTodoHandler = (taskIndex) => {
+      const taskId = this.state.todos[taskIndex].id
+      const todos = [...this.state.todos]
+      todos.splice(taskIndex, 1)
+      this.setState({todos: todos})
+      // Delete data on WP API
+      fetch(`${this.state.url}wp/v2/todos/${taskId}`, {
+          method: "DELETE",
+          headers: new Headers({
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic ' + Buffer.from(this.state.auth.login + ":" + this.state.auth.password).toString('base64'),
+          }),
+      })
   }
 
   render() {
@@ -89,17 +102,20 @@ class App extends Component {
 
     todos = (
           this.state.todos.map((todo, index) => {
+              // Test to add classes
               if (todo.acf.eddst_todo_done === true) {
                   return <TodoItem
                       active="list-is-active"
                       content={todo.title.rendered}
                       key={todo.id}
+                      delete={() => this.deleteTodoHandler(index)}
                       click={() => this.toggleTaskHandler(index)}
                   />
               } else {
                   return <TodoItem
                       content={todo.title.rendered}
                       key={todo.id}
+                      delete={() => this.deleteTodoHandler(index)}
                       click={() => this.toggleTaskHandler(index)}
                   />
               }
